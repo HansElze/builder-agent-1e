@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@chainlink/contracts':
+        specifier: ^0.8.0
+        version: 0.8.0(ethers@6.13.1)
       '@nomicfoundation/hardhat-toolbox':
         specifier: ^4.0.0
         version: 4.0.0(2d07cd1813b40ae4a3e637dd9bae66cd)
@@ -54,9 +57,20 @@ packages:
   '@bytecodealliance/preview2-shim@0.17.0':
     resolution: {integrity: sha512-JorcEwe4ud0x5BS/Ar2aQWOQoFzjq/7jcnxYXCvSMh0oRm0dQXzOA+hqLDBnOMks1LLBA7dmiLLsEBl09Yd6iQ==}
 
+  '@chainlink/contracts@0.8.0':
+    resolution: {integrity: sha512-nUv1Uxw5Mn92wgLs2bgPYmo8hpdQ3s9jB/lcbdU0LmNOVu0hbfmouVnqwRLa28Ll50q6GczUA+eO0ikNIKLZsA==}
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
+
+  '@eth-optimism/contracts@0.5.40':
+    resolution: {integrity: sha512-MrzV0nvsymfO/fursTB7m/KunkPsCndltVgfdHaT1Aj5Vi6R/doKIGGkOofHX+8B6VMZpuZosKCMQ5lQuqjt8w==}
+    peerDependencies:
+      ethers: ^5
+
+  '@eth-optimism/core-utils@0.12.0':
+    resolution: {integrity: sha512-qW+7LZYCz7i8dRa7SRlUKIo1VBU8lvN0HeXCxJR+z+xtMzMQpPds20XJNCMclszxYQHkXY00fOT6GvFw9ZL6nw==}
 
   '@ethereumjs/rlp@4.0.1':
     resolution: {integrity: sha512-tqsQiBQDQdmPWE1xkkBq4rlSW5QZpLOUJ5RJh2/9fug+q9tnUhuZoVLk7s0scUIKTOzEtR72DFBXI4WiZcMpvw==}
@@ -356,6 +370,15 @@ packages:
   '@nomicfoundation/solidity-analyzer@0.1.2':
     resolution: {integrity: sha512-q4n32/FNKIhQ3zQGGw5CvPF6GTvDCpYwIf7bEY/dZTZbgfDsHyjJwURxUJf3VQuuJj+fDIFl4+KkBVbw4Ef6jA==}
     engines: {node: '>= 12'}
+
+  '@openzeppelin/contracts-upgradeable@4.7.3':
+    resolution: {integrity: sha512-+wuegAMaLcZnLCJIvrVUDzA9z/Wp93f0Dla/4jJvIhijRrPabjQbZe6fWiECLaJyfn5ci9fqf9vTw3xpQOad2A==}
+
+  '@openzeppelin/contracts@3.4.2':
+    resolution: {integrity: sha512-z0zMCjyhhp4y7XKAcDAi3Vgms4T2PstwBdahiO0+9NaGICQKjynK3wduSRplTgk4LXmoO1yfDGO5RbjKYxtuxA==}
+
+  '@openzeppelin/contracts@4.3.3':
+    resolution: {integrity: sha512-tDBopO1c98Yk7Cv/PZlHqrvtVjlgK5R4J6jxLwoO7qxK4xqOiZG+zSkIvGFpPZ0ikc3QOED3plgdqjgNTnBc7g==}
 
   '@openzeppelin/contracts@5.0.2':
     resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
@@ -733,6 +756,10 @@ packages:
 
   buffer@4.9.2:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
+
+  bufio@1.2.3:
+    resolution: {integrity: sha512-5Tt66bRzYUSlVZatc0E92uDenreJ+DpTBmSAUwL4VSxJn3e6cUyYwx+PoqML0GRZatgA/VX8ybhxItF8InZgqA==}
+    engines: {node: '>=8.0.0'}
 
   bytes@3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
@@ -2317,9 +2344,52 @@ snapshots:
 
   '@bytecodealliance/preview2-shim@0.17.0': {}
 
+  '@chainlink/contracts@0.8.0(ethers@6.13.1)':
+    dependencies:
+      '@eth-optimism/contracts': 0.5.40(ethers@6.13.1)
+      '@openzeppelin/contracts': 4.3.3
+      '@openzeppelin/contracts-upgradeable-4.7.3': '@openzeppelin/contracts-upgradeable@4.7.3'
+      '@openzeppelin/contracts-v0.7': '@openzeppelin/contracts@3.4.2'
+    transitivePeerDependencies:
+      - bufferutil
+      - ethers
+      - utf-8-validate
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+
+  '@eth-optimism/contracts@0.5.40(ethers@6.13.1)':
+    dependencies:
+      '@eth-optimism/core-utils': 0.12.0
+      '@ethersproject/abstract-provider': 5.8.0
+      '@ethersproject/abstract-signer': 5.8.0
+      ethers: 6.13.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@eth-optimism/core-utils@0.12.0':
+    dependencies:
+      '@ethersproject/abi': 5.8.0
+      '@ethersproject/abstract-provider': 5.8.0
+      '@ethersproject/address': 5.8.0
+      '@ethersproject/bignumber': 5.8.0
+      '@ethersproject/bytes': 5.8.0
+      '@ethersproject/constants': 5.8.0
+      '@ethersproject/contracts': 5.8.0
+      '@ethersproject/hash': 5.8.0
+      '@ethersproject/keccak256': 5.8.0
+      '@ethersproject/properties': 5.8.0
+      '@ethersproject/providers': 5.8.0
+      '@ethersproject/rlp': 5.8.0
+      '@ethersproject/transactions': 5.8.0
+      '@ethersproject/web': 5.8.0
+      bufio: 1.2.3
+      chai: 4.3.10
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@ethereumjs/rlp@4.0.1': {}
 
@@ -2778,6 +2848,12 @@ snapshots:
       '@nomicfoundation/solidity-analyzer-linux-x64-musl': 0.1.2
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.2
 
+  '@openzeppelin/contracts-upgradeable@4.7.3': {}
+
+  '@openzeppelin/contracts@3.4.2': {}
+
+  '@openzeppelin/contracts@4.3.3': {}
+
   '@openzeppelin/contracts@5.0.2': {}
 
   '@openzeppelin/defender-admin-client@1.54.6(debug@4.4.1)':
@@ -3235,6 +3311,8 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
       isarray: 1.0.0
+
+  bufio@1.2.3: {}
 
   bytes@3.1.2: {}
 

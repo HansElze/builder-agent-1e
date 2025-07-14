@@ -21,6 +21,20 @@ async function main() {
     await mockTokenOut.deployed()
     console.log("Mock USDC deployed at:", mockTokenOut.address)
 
+    // Deploy mock Chainlink price feed
+    console.log("\n📊 Deploying Mock Chainlink Price Feed...")
+    const MockChainlinkPriceFeed = await ethers.getContractFactory("MockChainlinkPriceFeed")
+    const initialPrice = 2500 * 10 ** 8 // $2500 with 8 decimals
+    const priceFeed = await MockChainlinkPriceFeed.deploy(
+      8, // decimals
+      "ETH/USD",
+      1, // version
+      initialPrice,
+    )
+    await priceFeed.deployed()
+    console.log("Mock Price Feed deployed at:", priceFeed.address)
+    console.log("Initial ETH price set to: $2500")
+
     // Deploy mock Uniswap router
     console.log("\n📦 Deploying Mock Uniswap Router...")
     const MockUniswapRouter = await ethers.getContractFactory("MockUniswapRouter")
@@ -48,12 +62,20 @@ async function main() {
     console.log("Vault proxy deployed at:", vault.address)
     console.log("Vault implementation at:", implementationAddress)
 
-    // Deploy builder agent
-    console.log("\n🤖 Deploying Builder Agent...")
+    // Deploy builder agent with price feed
+    console.log("\n🤖 Deploying Builder Agent with Chainlink integration...")
     const BuilderAgent = await ethers.getContractFactory("BuilderAgent")
-    const builderAgent = await BuilderAgent.deploy(vault.address, mockAsset.address, mockTokenOut.address)
+    const priceThreshold = 2000 * 10 ** 8 // $2000 threshold
+    const builderAgent = await BuilderAgent.deploy(
+      vault.address,
+      mockAsset.address,
+      mockTokenOut.address,
+      priceFeed.address,
+      priceThreshold,
+    )
     await builderAgent.deployed()
     console.log("BuilderAgent deployed at:", builderAgent.address)
+    console.log("Price threshold set to: $2000")
 
     // Update vault to use BuilderAgent as the role
     console.log("\n🔐 Configuring Builder Agent role...")
@@ -68,9 +90,10 @@ async function main() {
     // Verify deployment
     console.log("\n✅ Verifying deployment...")
     const vaultInfo = await vault.getVaultInfo()
+    const currentPrice = await builderAgent.getLatestPrice()
     console.log("Total Assets:", ethers.utils.formatEther(vaultInfo._totalAssets))
-    console.log("Performance Fee Rate:", vaultInfo._performanceFeeRate.toString(), "basis points")
-    console.log("Management Fee Rate:", vaultInfo._managementFeeRate.toString(), "basis points")
+    console.log("Current ETH Price:", (currentPrice[0] / 10 ** 8).toString(), "USD")
+    console.log("Price Threshold:", (priceThreshold / 10 ** 8).toString(), "USD")
 
     // Output summary for CI/CD
     console.log("\n🎉 Deployment completed successfully!")
@@ -79,6 +102,7 @@ async function main() {
     console.log("Deployer:", deployer.address)
     console.log("Mock WETH:", mockAsset.address)
     console.log("Mock USDC:", mockTokenOut.address)
+    console.log("Price Feed:", priceFeed.address)
     console.log("Mock Router:", mockRouter.address)
     console.log("Vault Proxy:", vault.address)
     console.log("Vault Implementation:", implementationAddress)
@@ -91,10 +115,15 @@ async function main() {
       contracts: {
         mockWETH: mockAsset.address,
         mockUSDC: mockTokenOut.address,
+        priceFeed: priceFeed.address,
         mockRouter: mockRouter.address,
         vaultProxy: vault.address,
         vaultImplementation: implementationAddress,
         builderAgent: builderAgent.address,
+      },
+      config: {
+        initialPrice: initialPrice,
+        priceThreshold: priceThreshold,
       },
       timestamp: new Date().toISOString(),
       blockNumber: await ethers.provider.getBlockNumber(),
