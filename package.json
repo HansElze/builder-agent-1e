@@ -1,0 +1,27 @@
+{
+  "name": "cuttlefish-vault",
+  "version": "1.0.1",
+  "description": "Cuttlefish Vault with AI-driven builder agents for autonomous trading",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/hardhat-upgrades": "^3.1.0",
+    "chai": "^4.3.10",
+    "ethers": "^6.13.1",
+    "hardhat": "^2.22.6",
+    "mocha": "^10.7.0",
+    "solidity-coverage": "^0.8.5"
+  },
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "coverage": "npx hardhat coverage",
+    "deploy": "npx hardhat run scripts/deploy.js --network hardhat",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "interact": "npx hardhat run scripts/interact.js --network sepolia",
+    "monitor": "npx hardhat run scripts/monitor.js --network sepolia",
+    "verify": "npx hardhat verify --network sepolia",
+    "clean": "npx hardhat clean",
+    "node": "npx hardhat node"
+  }
+}
